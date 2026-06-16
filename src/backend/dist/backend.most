@@ -1,0 +1,349 @@
+// Version: 3.0.0
+type Article__854647936 =
+  {
+    authorId : Principal;
+    authorName : Text;
+    content : Text;
+    createdAt : Timestamp__244059318;
+    dislikes : Nat;
+    id : Text;
+    likes : Nat;
+    status : Text;
+    tags : [Text];
+    title : Text;
+    views : Nat
+  };
+type CibilCheckId__536361873 = Text;
+type CibilCheck__515593666 =
+  {
+    completedAt : Timestamp__301639476;
+    estimatedScore : Nat;
+    factors : [CibilFactor__32118650];
+    id : CibilCheckId__536361873;
+    scoreRange : Text;
+    sessionId : Text
+  };
+type CibilFactor__32118650 = {key : Text; value : Text};
+type CourseId__485964427 = CourseId__927523888;
+type CourseId__927523888 = Text;
+type Data__80296667<K, V> =
+  {var count : Nat__1040412405; kvs : [var ?(K, V)]};
+type Experience__520148371 =
+  {
+    authorName : Text;
+    company : Text;
+    createdAt : Timestamp__262512678;
+    difficulty : Text;
+    experienceText : Text;
+    id : Text;
+    role : Text
+  };
+type Internal__41346355<K, V> =
+  {children : [var ?Node__1000929467<K, V>]; data : Data__80296667<K, V>};
+type Leaf__712614010<K, V> = {data : Data__80296667<K, V>};
+type List__529703492<T> =
+  {
+    var blockIndex : Nat__1040412405;
+    var blocks : [var [var ?T]];
+    var elementIndex : Nat__1040412405
+  };
+type List__560604548<T> = List__529703492<T>;
+type LoanApplicationId__449579032 = Text;
+type LoanApplication__658244092 =
+  {
+    city : Text;
+    email : Text;
+    employmentType : Text;
+    existingEMI : Nat;
+    id : LoanApplicationId__449579032;
+    loanAmount : Nat;
+    loanType : Text;
+    message : Text;
+    monthlyIncome : Nat;
+    name : Text;
+    panNumber : Text;
+    phone : Text;
+    propertyValue : ?Nat;
+    submittedAt : Timestamp__301639476
+  };
+type MeetingRequestId__597287734 = Text;
+type MeetingRequest__800989662 =
+  {
+    email : Text;
+    id : MeetingRequestId__597287734;
+    message : Text;
+    name : Text;
+    phone : Text;
+    preferredDate : Text;
+    preferredTime : Text;
+    submittedAt : Timestamp__301639476;
+    topic : Text
+  };
+type Message__19119041 = {role : Text; text : Text; timestamp : Int};
+type MockTestResult__989975764 =
+  {
+    answers : [Text];
+    completedAt : Timestamp__731387503;
+    id : Text;
+    score : Nat;
+    testId : Text;
+    timeTaken : Nat;
+    totalQuestions : Nat;
+    userId : Principal
+  };
+type MonthlyReportId__67031774 = Text;
+type MonthlyReport__394707879 =
+  {
+    excelLink : ?Text;
+    generatedAt : Timestamp__301639476;
+    id : MonthlyReportId__67031774;
+    loanApplications : [LoanApplication__658244092];
+    meetingRequests : [MeetingRequest__800989662];
+    yearMonth : Text
+  };
+type Nat__1040412405 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__1000929467<K, V> =
+  {#internal : Internal__41346355<K, V>; #leaf : Leaf__712614010<K, V>};
+type Note__1063160515 =
+  {
+    content : Text;
+    createdAt : Timestamp__354304526;
+    id : Text;
+    title : Text;
+    topicId : Text;
+    updatedAt : Timestamp__354304526;
+    userId : Principal
+  };
+type OldReview__1036017002 =
+  {
+    id : Nat;
+    rating : Nat;
+    text : Text;
+    timestamp : Int;
+    universityName : Text;
+    username : Text
+  };
+type PendingVerification__727221264 =
+  {code : Text; email : Text; expiresAt : Int};
+type Personality__338702426 = {#calm; #encouraging; #playful; #witty};
+type Question__879138514 =
+  {
+    answers : [Text];
+    correctIndex : Nat;
+    difficulty : Nat;
+    text : Text;
+    topic : Text;
+    xpReward : Nat
+  };
+type Review__513345496 =
+  {
+    comment : Text;
+    id : Nat;
+    name : Text;
+    rating : Nat;
+    timestamp : Timestamp__952878099
+  };
+type Timestamp__244059318 = Timestamp__301639476;
+type Timestamp__262512678 = Timestamp__301639476;
+type Timestamp__301639476 = Int;
+type Timestamp__354304526 = Timestamp__301639476;
+type Timestamp__731387503 = Timestamp__301639476;
+type Timestamp__952878099 = Timestamp__301639476;
+type UserProfile__491224006 =
+  {
+    badges : [Text];
+    burnoutScore : Nat;
+    companionName : Text;
+    completedTopics : [Text];
+    lastActive : Int;
+    level : Nat;
+    messagesSent : Nat;
+    personality : Personality__338702426;
+    streakDays : Nat;
+    username : Text;
+    xp : Nat
+  };
+actor ({
+  stable CLAUDE_API_URL : Text;
+  stable CLAUDE_MODEL : Text;
+  stable SHARED_API_KEY : Text;
+  stable allQuestions :
+    {
+      var blockIndex : Nat__1040412405;
+      var blocks : [var [var ?Question__879138514]];
+      var elementIndex : Nat__1040412405
+    };
+  stable articlesMap :
+    {
+      var root : Node__1000929467<Text, Article__854647936>;
+      var size : Nat__1040412405
+    };
+  stable cibilChecks :
+    {
+      var root : Node__1000929467<Text, CibilCheck__515593666>;
+      var size : Nat__1040412405
+    };
+  stable convoHistory :
+    {
+      var root :
+        Node__1000929467<Principal, List__560604548<Message__19119041>>;
+      var size : Nat__1040412405
+    };
+  stable enrollments :
+    {
+      var root :
+        Node__1000929467<Principal, List__560604548<CourseId__485964427>>;
+      var size : Nat__1040412405
+    };
+  stable experiencesMap :
+    {
+      var root : Node__1000929467<Text, Experience__520148371>;
+      var size : Nat__1040412405
+    };
+  stable followersMap :
+    {
+      var root : Node__1000929467<Principal, List__560604548<Principal>>;
+      var size : Nat__1040412405
+    };
+  stable followingMap :
+    {
+      var root : Node__1000929467<Principal, List__560604548<Principal>>;
+      var size : Nat__1040412405
+    };
+  stable gcoinBalances :
+    {var root : Node__1000929467<Principal, Nat>; var size : Nat__1040412405};
+  stable loanApplications :
+    {
+      var root : Node__1000929467<Text, LoanApplication__658244092>;
+      var size : Nat__1040412405
+    };
+  stable meetingRequests :
+    {
+      var root : Node__1000929467<Text, MeetingRequest__800989662>;
+      var size : Nat__1040412405
+    };
+  stable mockTestResultsMap :
+    {
+      var root :
+        Node__1000929467<Principal,
+                          List__560604548<MockTestResult__989975764>>;
+      var size : Nat__1040412405
+    };
+  stable monthlyReports :
+    {
+      var root : Node__1000929467<Text, MonthlyReport__394707879>;
+      var size : Nat__1040412405
+    };
+  stable notesMap :
+    {
+      var root :
+        Node__1000929467<Principal, List__560604548<Note__1063160515>>;
+      var size : Nat__1040412405
+    };
+  stable pendingVerifications :
+    {
+      var root : Node__1000929467<Text, PendingVerification__727221264>;
+      var size : Nat__1040412405
+    };
+  in reviews : List__560604548<OldReview__1036017002>;
+  stable userProfiles :
+    {
+      var root : Node__1000929467<Principal, UserProfile__491224006>;
+      var size : Nat__1040412405
+    }
+}, {
+  stable CLAUDE_API_URL : Text;
+  stable CLAUDE_MODEL : Text;
+  stable SHARED_API_KEY : Text;
+  stable allQuestions :
+    {
+      var blockIndex : Nat__1040412405;
+      var blocks : [var [var ?Question__879138514]];
+      var elementIndex : Nat__1040412405
+    };
+  stable articlesMap :
+    {
+      var root : Node__1000929467<Text, Article__854647936>;
+      var size : Nat__1040412405
+    };
+  stable cibilChecks :
+    {
+      var root : Node__1000929467<Text, CibilCheck__515593666>;
+      var size : Nat__1040412405
+    };
+  stable convoHistory :
+    {
+      var root :
+        Node__1000929467<Principal, List__560604548<Message__19119041>>;
+      var size : Nat__1040412405
+    };
+  stable enrollments :
+    {
+      var root :
+        Node__1000929467<Principal, List__560604548<CourseId__485964427>>;
+      var size : Nat__1040412405
+    };
+  stable experiencesMap :
+    {
+      var root : Node__1000929467<Text, Experience__520148371>;
+      var size : Nat__1040412405
+    };
+  stable followersMap :
+    {
+      var root : Node__1000929467<Principal, List__560604548<Principal>>;
+      var size : Nat__1040412405
+    };
+  stable followingMap :
+    {
+      var root : Node__1000929467<Principal, List__560604548<Principal>>;
+      var size : Nat__1040412405
+    };
+  stable gcoinBalances :
+    {var root : Node__1000929467<Principal, Nat>; var size : Nat__1040412405};
+  stable loanApplications :
+    {
+      var root : Node__1000929467<Text, LoanApplication__658244092>;
+      var size : Nat__1040412405
+    };
+  stable meetingRequests :
+    {
+      var root : Node__1000929467<Text, MeetingRequest__800989662>;
+      var size : Nat__1040412405
+    };
+  stable mockTestResultsMap :
+    {
+      var root :
+        Node__1000929467<Principal,
+                          List__560604548<MockTestResult__989975764>>;
+      var size : Nat__1040412405
+    };
+  stable monthlyReports :
+    {
+      var root : Node__1000929467<Text, MonthlyReport__394707879>;
+      var size : Nat__1040412405
+    };
+  stable nextReviewId : {var value : Nat};
+  stable notesMap :
+    {
+      var root :
+        Node__1000929467<Principal, List__560604548<Note__1063160515>>;
+      var size : Nat__1040412405
+    };
+  stable pendingVerifications :
+    {
+      var root : Node__1000929467<Text, PendingVerification__727221264>;
+      var size : Nat__1040412405
+    };
+  stable reviews :
+    {
+      var blockIndex : Nat__1040412405;
+      var blocks : [var [var ?Review__513345496]];
+      var elementIndex : Nat__1040412405
+    };
+  stable userProfiles :
+    {
+      var root : Node__1000929467<Principal, UserProfile__491224006>;
+      var size : Nat__1040412405
+    }
+});

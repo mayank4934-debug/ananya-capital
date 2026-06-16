@@ -1,0 +1,1 @@
+import{j as a}from"./vendor-query-B6h-cEMC.js";import{g as d}from"./Layout-DfME2-bC.js";function e({className:r,...o}){return a.jsx("div",{"data-slot":"card",className:d("bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm",r),...o})}export{e as C};

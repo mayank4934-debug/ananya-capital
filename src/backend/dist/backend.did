@@ -1,0 +1,268 @@
+type VerifyResult = 
+ variant {
+   err: text;
+   ok;
+ };
+type UserProfile = 
+ record {
+   badges: vec text;
+   burnoutScore: nat;
+   companionName: text;
+   completedTopics: vec text;
+   lastActive: int;
+   level: nat;
+   messagesSent: nat;
+   personality: Personality;
+   streakDays: nat;
+   username: text;
+   xp: nat;
+ };
+type Timestamp = int;
+type Review = 
+ record {
+   comment: text;
+   id: nat;
+   name: text;
+   rating: nat;
+   timestamp: Timestamp;
+ };
+type Question = 
+ record {
+   answers: vec text;
+   correctIndex: nat;
+   difficulty: nat;
+   "text": text;
+   topic: text;
+   xpReward: nat;
+ };
+type ProgressReport = 
+ record {
+   badges: vec text;
+   completedTopicsCount: nat;
+   enrolledCourses: vec text;
+   level: nat;
+   quizzesPassedCount: nat;
+   streakDays: nat;
+   username: text;
+   xp: nat;
+ };
+type Personality = 
+ variant {
+   calm;
+   encouraging;
+   playful;
+   witty;
+ };
+type Note = 
+ record {
+   content: text;
+   createdAt: Timestamp;
+   id: text;
+   title: text;
+   topicId: text;
+   updatedAt: Timestamp;
+   userId: principal;
+ };
+type MonthlyReportInput = record {yearMonth: text;};
+type MonthlyReportId = text;
+type MonthlyReport = 
+ record {
+   excelLink: opt text;
+   generatedAt: Timestamp;
+   id: MonthlyReportId;
+   loanApplications: vec LoanApplication;
+   meetingRequests: vec MeetingRequest;
+   yearMonth: text;
+ };
+type MockTestResult = 
+ record {
+   answers: vec text;
+   completedAt: Timestamp;
+   id: text;
+   score: nat;
+   testId: text;
+   timeTaken: nat;
+   totalQuestions: nat;
+   userId: principal;
+ };
+type Message = 
+ record {
+   role: text;
+   "text": text;
+   timestamp: int;
+ };
+type MeetingRequestInput = 
+ record {
+   email: text;
+   message: text;
+   name: text;
+   phone: text;
+   preferredDate: text;
+   preferredTime: text;
+   topic: text;
+ };
+type MeetingRequestId = text;
+type MeetingRequest = 
+ record {
+   email: text;
+   id: MeetingRequestId;
+   message: text;
+   name: text;
+   phone: text;
+   preferredDate: text;
+   preferredTime: text;
+   submittedAt: Timestamp;
+   topic: text;
+ };
+type LoanApplicationInput = 
+ record {
+   city: text;
+   email: text;
+   employmentType: text;
+   existingEMI: nat;
+   loanAmount: nat;
+   loanType: text;
+   message: text;
+   monthlyIncome: nat;
+   name: text;
+   panNumber: text;
+   phone: text;
+   propertyValue: opt nat;
+ };
+type LoanApplicationId = text;
+type LoanApplication = 
+ record {
+   city: text;
+   email: text;
+   employmentType: text;
+   existingEMI: nat;
+   id: LoanApplicationId;
+   loanAmount: nat;
+   loanType: text;
+   message: text;
+   monthlyIncome: nat;
+   name: text;
+   panNumber: text;
+   phone: text;
+   propertyValue: opt nat;
+   submittedAt: Timestamp;
+ };
+type HttpResponse = 
+ record {
+   body: blob;
+   headers: vec record {
+                  text;
+                  text;
+                };
+   status_code: nat16;
+ };
+type HttpRequest = 
+ record {
+   body: blob;
+   headers: vec record {
+                  text;
+                  text;
+                };
+   method: text;
+   url: text;
+ };
+type Experience = 
+ record {
+   authorName: text;
+   company: text;
+   createdAt: Timestamp;
+   difficulty: text;
+   experienceText: text;
+   id: text;
+   role: text;
+ };
+type EnrollResult = 
+ variant {
+   err: text;
+   ok;
+ };
+type CourseId = text;
+type CibilFactor = 
+ record {
+   key: text;
+   value: text;
+ };
+type CibilCheckInput = 
+ record {
+   estimatedScore: nat;
+   factors: vec CibilFactor;
+   scoreRange: text;
+   sessionId: text;
+ };
+type Article = 
+ record {
+   authorId: principal;
+   authorName: text;
+   content: text;
+   createdAt: Timestamp;
+   dislikes: nat;
+   id: text;
+   likes: nat;
+   status: text;
+   tags: vec text;
+   title: text;
+   views: nat;
+ };
+type AIChatMessage = 
+ record {
+   content: text;
+   role: text;
+ };
+service : {
+  addMessage: (role: text, "text": text) -> ();
+  addSampleQuestions: () -> ();
+  awardBadge: (badgeId: text) -> ();
+  awardGCoins: (amount: nat) -> (nat);
+  completeTopic: (topicId: text) -> ();
+  deleteNote: (noteId: text) -> (bool);
+  dislikeArticle: (id: text) -> (bool);
+  enrollCourse: (courseId: text) -> (EnrollResult);
+  followUser: (targetId: text) -> (bool);
+  generateMonthlyReport: (input: MonthlyReportInput) -> (MonthlyReport);
+  getAllStats: () -> (UserProfile) query;
+  getArticles: (status: text) -> (vec Article) query;
+  getEnrolledCourses: () -> (vec CourseId) query;
+  getExperiences: () -> (vec Experience) query;
+  getGCoins: () -> (nat) query;
+  getHistory: () -> (vec Message) query;
+  getMockTestResults: () -> (vec MockTestResult) query;
+  getMonthlyReports: () -> (vec MonthlyReport) query;
+  getMyFollowers: () -> (vec text) query;
+  getMyFollowing: () -> (vec text) query;
+  getNotes: () -> (vec Note) query;
+  getOrCreateProfile: (username: text) -> (UserProfile);
+  getProgressReport: () -> (ProgressReport) query;
+  getQuestionsByTopic: (topic: text) -> (vec Question) query;
+  getReviews: () -> (vec Review) query;
+  http_request: (req: HttpRequest) -> (HttpResponse) query;
+  incrementArticleView: (id: text) -> (bool);
+  isFollowingUser: (targetId: text) -> (bool) query;
+  likeArticle: (id: text) -> (bool);
+  proxyAIChat: (messages: vec AIChatMessage, systemPrompt: text) -> (text);
+  saveCibilCheck: (check: CibilCheckInput) -> (text);
+  saveMockTestResult: (testId: text, score: nat, totalQuestions: nat,
+   timeTaken: nat, answers: vec text) -> (MockTestResult);
+  saveNote: (title: text, content: text, topicId: text) -> (Note);
+  sendVerificationEmail: (email: text) -> ();
+  submitArticle: (title: text, content: text, tags: vec text, authorName:
+   text) -> (Article);
+  submitExperience: (authorName: text, company: text, role: text, difficulty:
+   text, experienceText: text) -> (Experience);
+  submitLoanApplication: (app: LoanApplicationInput) -> (text);
+  submitMeetingRequest: (req: MeetingRequestInput) -> (text);
+  submitReview: (name: text, rating: nat, comment: text) ->
+   (variant {
+      err: text;
+      ok: Review;
+    });
+  unenrollCourse: (courseId: text) -> (EnrollResult);
+  unfollowUser: (targetId: text) -> (bool);
+  updateCompanion: (name: text, personality: Personality) -> ();
+  updateNote: (noteId: text, title: text, content: text) -> (opt Note);
+  verifyEmail: (email: text, code: text) -> (VerifyResult);
+}
